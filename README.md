@@ -1,5 +1,6 @@
 # SkyWars
 SkyWars Project
+See a bug? please send the bug to https://github.com/MasApip/SkyWars/issues/new
 
 # Feature
 - Kit
