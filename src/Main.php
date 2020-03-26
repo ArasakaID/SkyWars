@@ -238,7 +238,7 @@ class Main extends PluginBase {
 
                 $level = $server->getLevelByName($world);
                 if ($level === null && !$server->loadLevel($level)) {//console error?
-                    return;
+                    continue;
                 }
 
                 $tile = $level->getTileAt($x, $y, $z);
