@@ -1,12 +1,12 @@
 # SkyWars
 SkyWars Project
 
-#Feature
+# Feature
 - Kit
 - Cage
 - Chest Refill
 - Spectator Mode
 - Custom Death Message
 
-#Credit
+# Credit
 Full credit for Svilex created the SkyWars, i just remake them
