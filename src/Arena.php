@@ -639,11 +639,7 @@ class Arena {
                 $server->broadcastMessage(str_replace(["{SWNAME}", "{PLAYER}"], [$this->SWname, $player->getName()], $this->plugin->lang["server.broadcast.winner"]), $server->getDefaultLevel()->getPlayers());
                 $player->addTitle("§6§lVICTORY!", "§aYou are amazing!");
                 
-                //Economy reward
-                if ($this->plugin->configs["reward.winning.players"] && is_numeric($this->plugin->configs["reward.value"]) && is_int(($this->plugin->configs["reward.value"] + 0)) && $this->plugin->economy instanceof \SkyWars\utils\Economy && $this->plugin->economy->getApiVersion() != 0) {
-                    $this->plugin->economy->addMoney($player, (int)$this->plugin->configs["reward.value"]);
-                    $player->sendMessage(str_replace(["{MONEY}", "{VALUE}"], [$this->plugin->economy->getMoney($player), $this->plugin->configs["reward.value"]], $this->plugin->lang["winner.reward.msg"]));
-                }
+            
 
                 //Reward command
                 $command = trim($this->plugin->configs["reward.command"]);
