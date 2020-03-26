@@ -13,8 +13,6 @@ use pocketmine\tile\Sign;
 use pocketmine\utils\TextFormat;
 use onebone\economyapi\EconomyAPI;
 
-use SkyWars\utils\Economy;
-
 class Main extends PluginBase {
 
     /** Plugin Version */
@@ -36,9 +34,6 @@ class Main extends PluginBase {
     public $lang;
 
     public $kill;
-
-    /** @var Economy|null */
-    public $economy;
 
     /** @var string[] */
     private $player_arenas = [];
@@ -71,13 +66,7 @@ class Main extends PluginBase {
 
         $this->getServer()->getCommandMap()->register($this->getName(), new Commands("sw", $this));
 
-        if ($this->configs["reward.winning.players"]) {
-            if (!$this->economy->getApiVersion()) {
-                $this->getLogger()->warning('Cannot find an economy plugin, the reward feature will be disabled.');
-            } else {
-                $this->economy = new Economy($this);
-            }
-        }
+    
     }
 
     private function updatePlugin(string $old_version) : void
