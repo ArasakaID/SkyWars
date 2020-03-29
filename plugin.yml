@@ -4,4 +4,9 @@ main: SkyWars\Main
 version: 1.0.0
 api: 3.0.0
 depend: ["FormAPI", "Scoreboards"]
+
+commands:
+ sw:
+  default: op
+  description: SkyWars command
   
