@@ -42,8 +42,9 @@ class Main extends PluginBase {
     {
         @mkdir($this->getDataFolder());
 
-        $this->saveResource("configs.yml");
-        $this->saveResource("lang.yml");
+        foreach ($this->getResources() as $resource) {
+            $this->saveResource($resource->getFilename());
+        }
 
         //Config files: /SW_configs.yml /SW_lang.yml & for arenas: /arenas/SWname/settings.yml
         $this->configs = array_map(function($value){ return is_string($value) ? TextFormat::colorize($value) : $value; }, yaml_parse_file($this->getDataFolder() . "configs.yml"));
