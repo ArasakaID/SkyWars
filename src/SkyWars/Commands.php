@@ -305,9 +305,9 @@ class Commands extends PluginCommand {
 
                 $sender->sendMessage(TextFormat::GREEN . "Deleting arena '" . $arena . "'...");
 
-                $this->getPlugin()->arenas[$SWname]->stop(true);
+                $this->getPlugin()->arenas[$arena]->stop(true);
                 $this->getPlugin()->deleteAllSigns($arena);
-                unset($this->getPlugin()->arenas[$SWname]);
+                unset($this->getPlugin()->arenas[$arena]);
 
                 foreach (scandir($this->getPlugin()->getDataFolder() . "arenas/" . $arena) as $file) {
                     $file_path = $this->getPlugin()->getDataFolder() . "arenas/" . $arena . "/" . $file;
