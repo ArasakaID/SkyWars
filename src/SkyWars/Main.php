@@ -41,7 +41,7 @@ class Main extends PluginBase {
     public function onEnable() : void
     {
         @mkdir($this->getDataFolder());
-
+        $this->saveResource("lang.yml");
         foreach ($this->getResources() as $resource) {
             $this->saveResource($resource->getFilename());
         }
