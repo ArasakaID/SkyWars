@@ -283,7 +283,7 @@ class Arena {
                         $api->new($p, "SkyWars1", "§l§eSKYWARS");
                         $api->setLine($p, 1, " ");
                         $api->setLine($p, 2, "§fMap: §a{$this->SWname}");
-                        $api->setLine($p, 3, "§fPlayers: §a1/12");
+                        $api->setLine($p, 3, "§fPlayers: §a1/{$this->slot}");
                         $api->setLine($p, 4, "  ");
                         $api->setLine($p, 5, "§fWaiting...");
                         $api->setLine($p, 6, "   ");
