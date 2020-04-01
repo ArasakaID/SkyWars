@@ -13,10 +13,10 @@ For Scoreboards please using Scoreboards, Download Here: https://www.mediafire.c
 # Permission
 - Creating, Deleting is only OP
 - Kits
-  > Fighter = sw.kit.fighter
-  > Armorer = sw.kit.armorer
-  > Blacksmith = sw.kit.blacksmith
-  > Archer = sw.kit.archer
+  > Fighter = sw.kit.fighter .
+  > Armorer = sw.kit.armorer .
+  > Blacksmith = sw.kit.blacksmith .
+  > Archer = sw.kit.archer .
 
 # Credit
 Full credit for Svilex created the SkyWars, i just remake them
