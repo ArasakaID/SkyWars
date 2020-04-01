@@ -10,5 +10,13 @@ For Scoreboards please using Scoreboards, Download Here: https://www.mediafire.c
 - Spectator Mode
 - Custom Death Message
 
+# Permission
+- Creating, Deleting is only OP
+- Kits
+  Fighter = sw.kit.fighter
+  Armorer = sw.kit.armorer
+  Blacksmith = sw.kit.blacksmith
+  Archer = sw.kit.archer
+
 # Credit
 Full credit for Svilex created the SkyWars, i just remake them
