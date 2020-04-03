@@ -151,6 +151,7 @@ class EventListener implements Listener {
             $event->setCancelled();
         }
         if ($item->getCustomName() == "§r§aKit selector") {
+	    $player->getInventory()->setHeldItemIndex(1);
             $event->setCancelled();
         }
     }
