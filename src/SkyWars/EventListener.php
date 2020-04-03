@@ -104,7 +104,6 @@ class EventListener implements Listener {
             $arena->closePlayer($player);
         }
         if ($item->getCustomName() == "§r§aKit selector" && $item->getId() == 54){
-	    $player->getInventory()->setHeldItemIndex(1);
             $this->kitForm($player);
         }
         if (($block->getId() === Block::SIGN_POST || $block->getId() === Block::WALL_SIGN) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
