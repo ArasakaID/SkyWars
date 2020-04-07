@@ -361,6 +361,7 @@ class Arena {
                         $player->getLevel()->addSound(new ClickSound($player), [$player]);
                         $player->sendMessage("§eStarting in §c1 §eseconds");
                         $player->addTitle("§c1", "§ePrepare for battle!");
+                        $player->setGamemode(Player::SURVIVAL);
                     }
                 }
 
@@ -440,7 +441,7 @@ class Arena {
 
 
         //Removes player things
-        $player->setGamemode(Player::SURVIVAL);
+        $player->setGamemode(Player::ADVENTURE);
         $this->playerSnapshots[$player->getId()] = new PlayerSnapshot($player, $this->plugin->configs["clear.inventory.on.arena.join"], $this->plugin->configs["clear.effects.on.arena.join"]);
         $player->setMaxHealth($this->plugin->configs["join.max.health"]);
 
