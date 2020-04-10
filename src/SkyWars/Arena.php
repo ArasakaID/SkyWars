@@ -513,7 +513,17 @@ class Arena {
         if ($current_state === Arena::PLAYER_NOT_FOUND) {
             return false;
         }
-
+        
+        $player->setHealth(20);
+        $player->setMaxHealth(20);
+        $player->setFood(20);
+        $player->extinguish();
+        $player->removeAllEffects();
+        $player->getInventory()->clearAll();
+        $player->getArmorInventory()->clearAll();
+        $player->getCursorInventory()->clearAll();
+        $player->getCraftingGrid()->clearAll();
+        
         $this->setPlayerState($player, null);
 
         if ($this->GAME_STATE === Arena::STATE_COUNTDOWN) {
@@ -566,6 +576,9 @@ class Arena {
                 $playerSnapshot->injectInto($player);
             } elseif ($this->GAME_STATE !== Arena::STATE_COUNTDOWN && 1 < count(array_keys($this->players, Arena::PLAYER_PLAYING, true))) {
                 $player->setGamemode(Player::SPECTATOR);
+                if($player->getY() < 0){
+                    $player->teleport($player->getLevel()->getSpawnLocation());
+                }
                 foreach ($this->getPlayers() as $pl) {
                     $pl->hidePlayer($player);
                 }
