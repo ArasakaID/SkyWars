@@ -237,14 +237,11 @@ class EventListener implements Listener {
 		
                     if (($entity->getHealth() - $event->getFinalDamage()) <= 0) {
                         $entity->addTitle("§c§lYOU DIED!", "§eDont give up!");
-                        $event->setCancelled();
+                        
                         $this->plugin->sendDeathMessage($entity, $event->getCause(), $event instanceof EntityDamageByEntityEvent ? $event->getDamager() : null);
-
-                        if ($this->plugin->configs["drops.on.death"]) {
-                            $entity->getInventory()->dropContents($entity->getLevel(), $entity->asVector3());
-                        }
-
+                        $entity->getInventory()->dropContents($entity->getLevel(), $entity->asVector3());
                         $arena->closePlayer($entity, false, true);
+			$event->setCancelled();
                     }
                 }
             }
