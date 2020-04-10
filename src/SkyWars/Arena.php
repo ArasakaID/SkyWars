@@ -320,49 +320,18 @@ class Arena {
                     $api->setLine($p, 11, "§eMasApip");
                     $api->getObjectiveName($p);
                 }
-
-                if ($this->time % $this->countdown === 10) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new PopSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §a10 §eseconds");
-                        $player->addTitle("§a10", "§ePrepare for battle!");
-                    }
-                }
-                if ($this->time % $this->countdown === 15) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new PopSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §a5 §eseconds");
-                        $player->addTitle("§a5", "§ePrepare for battle!");
-                    }
-                }
-                if ($this->time % $this->countdown === 16) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new PopSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §64 §eseconds");
-                        $player->addTitle("§64", "§ePrepare for battle!");
-                    }
-                }
-                if ($this->time % $this->countdown === 17) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new ClickSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §63 §eseconds");
-                        $player->addTitle("§63", "§ePrepare for battle!");
-                    }
-                }
-                if ($this->time % $this->countdown === 18) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new ClickSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §62 §eseconds");
-                        $player->addTitle("§62", "§ePrepare for battle!");
-                    }
-                }
-                if ($this->time % $this->countdown === 19) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new ClickSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §c1 §eseconds");
-                        $player->addTitle("§c1", "§ePrepare for battle!");
-                        $player->setGamemode(Player::SURVIVAL);
-                    }
+                foreach ($this->getPlayers() as $p) {
+                    if (($this->countdown - $this->time) == 10) $player->addTitle("§c10", "§ePrepare to fight!");
+                    
+                    if (($this->countdown - $this->time) <= 5) $player->addTitle("§c5", "§ePrepare to fight!");
+                    
+                    if (($this->countdown - $this->time) <= 4) $player->addTitle("§c4", "§ePrepare to fight!");
+                    
+                    if (($this->countdown - $this->time) <= 3) $player->addTitle("§c3", "§ePrepare to fight!");
+					
+                    if (($this->countdown - $this->time) <= 2) $player->addTitle("§c2", "§ePrepare to fight!");
+					
+                    if (($this->countdown - $this->time) <= 1) $player->addTitle("§c1", "§ePrepare to fight!");
                 }
 
                 //$this->sendPopup(str_replace("{N}", date("i:s", ($this->countdown - $this->time)), $this->plugin->lang["popup.countdown"]));
