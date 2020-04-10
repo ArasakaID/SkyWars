@@ -100,12 +100,16 @@ class EventListener implements Listener {
         $player = $event->getPlayer();
         $item = $player->getInventory()->getItemInHand();
         $arena = $this->plugin->getPlayerArena($player);
-        if ($item->getCustomName() == "§r§cQuit from arena" && $item->getId() == 355){
-            $arena->closePlayer($player);
-        }
-        if ($item->getCustomName() == "§r§aKit selector" && $item->getId() == 54){
-            $this->kitForm($player);
-        }
+	if ($arena !== null) {
+        	if ($item->getCustomName() == "§r§cQuit from arena" && $item->getId() == 355){
+			$player->getInventory()->setHeldItemIndex(1);
+         	    $arena->closePlayer($player);
+        	}
+        	if ($item->getCustomName() == "§r§aKit selector" && $item->getId() == 54){
+			$player->getInventory()->setHeldItemIndex(1);
+        	    $this->kitForm($player);
+        	}
+	}
         if (($block->getId() === Block::SIGN_POST || $block->getId() === Block::WALL_SIGN) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
             $arena = $this->plugin->getArenaFromSign($block);
             if ($arena !== null) {
@@ -140,18 +144,17 @@ class EventListener implements Listener {
         $arena = $this->plugin->getPlayerArena($player);
 
         if ($arena !== null) {
+		$item = $player->getInventory()->getItemInHand();
+        	if ($item->getCustomName() == "§r§cQuit from arena") {
+        	    $event->setCancelled();
+        	}
+        	if ($item->getCustomName() == "§r§aKit selector") {
+        	    $event->setCancelled();
+        	}
             $type = $arena->inArena($player);
             if ($type === Arena::PLAYER_SPECTATING || ($type === Arena::PLAYER_PLAYING && !$this->plugin->configs["player.drop.item"])) {
                 $event->setCancelled();
             }
-        }
-
-        $item = $player->getInventory()->getItemInHand();
-        if ($item->getCustomName() == "§r§cQuit from arena") {
-            $event->setCancelled();
-        }
-        if ($item->getCustomName() == "§r§aKit selector") {
-            $event->setCancelled();
         }
     }
 
@@ -166,9 +169,13 @@ class EventListener implements Listener {
     public function onItemHeld(PlayerItemHeldEvent $event) : void
     {
         $player = $event->getPlayer();
-        if($event->getItem()->getId() === Item::COMPASS && $event->getItem()->getCustomName() === "§r§aSpectator"){
-            $this->spectatorForm($player);
-        }
+	$arena = $this->plugin->getPlayerArena($player);
+
+        if ($arena !== null) {
+        	if($event->getItem()->getId() === Item::COMPASS && $event->getItem()->getCustomName() === "§r§aSpectator"){
+        	    $this->spectatorForm($player);
+        	}
+	}
     }
 
     public function onMove(PlayerMoveEvent $event) : void
@@ -179,16 +186,6 @@ class EventListener implements Listener {
         $player = $event->getPlayer();
 
         if (floor($from->x) !== floor($to->x) || floor($from->z) !== floor($to->z) || floor($from->y) !== floor($from->y)) {//moved a block
-            $arena = $this->plugin->getPlayerArena($player);
-            if ($arena !== null) {
-                if ($arena->GAME_STATE === Arena::STATE_COUNTDOWN) {
-                    $event->setCancelled();
-                } elseif ($arena->void >= floor($to->y)) {
-                    $player->attack(new EntityDamageEvent($player, EntityDamageEvent::CAUSE_VOID, 100));
-                }
-                return;
-            }
-
             if ($this->plugin->configs["sign.knockBack"]) {
                 foreach ($this->plugin->getNearbySigns($to, $this->plugin->configs["knockBack.radius.from.sign"]) as $pos) {
                     $player->knockBack($player, 0, $from->x - $pos->x, $from->z - $pos->z, $this->plugin->configs["knockBack.intensity"] / 5);
@@ -327,7 +324,10 @@ class EventListener implements Listener {
                 break;
                 case 1:
                     $arena = $this->plugin->getPlayerArena($player);
-                    $arena->closePlayer($player);
+
+        		if ($arena !== null) {
+                    	$arena->closePlayer($player);
+			}
                 break;
                 case 2:
                     $player->getServer()->dispatchCommand($player, "report");
