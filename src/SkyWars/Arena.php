@@ -321,17 +321,17 @@ class Arena {
                     $api->getObjectiveName($p);
                 }
                 foreach ($this->getPlayers() as $p) {
-                    if (($this->countdown - $this->time) == 10) $player->addTitle("§c10", "§ePrepare to fight!");
+                    if (($this->countdown - $this->time) == 10) $p->addTitle("§c10", "§ePrepare to fight!");
                     
-                    if (($this->countdown - $this->time) <= 5) $player->addTitle("§c5", "§ePrepare to fight!");
+                    if (($this->countdown - $this->time) <= 5) $p->addTitle("§c5", "§ePrepare to fight!");
                     
-                    if (($this->countdown - $this->time) <= 4) $player->addTitle("§c4", "§ePrepare to fight!");
+                    if (($this->countdown - $this->time) <= 4) $p->addTitle("§c4", "§ePrepare to fight!");
                     
-                    if (($this->countdown - $this->time) <= 3) $player->addTitle("§c3", "§ePrepare to fight!");
+                    if (($this->countdown - $this->time) <= 3) $p->addTitle("§c3", "§ePrepare to fight!");
 					
-                    if (($this->countdown - $this->time) <= 2) $player->addTitle("§c2", "§ePrepare to fight!");
+                    if (($this->countdown - $this->time) <= 2) $p->addTitle("§c2", "§ePrepare to fight!");
 					
-                    if (($this->countdown - $this->time) <= 1) $player->addTitle("§c1", "§ePrepare to fight!");
+                    if (($this->countdown - $this->time) <= 1) $p->addTitle("§c1", "§ePrepare to fight!");
                 }
 
                 //$this->sendPopup(str_replace("{N}", date("i:s", ($this->countdown - $this->time)), $this->plugin->lang["popup.countdown"]));
