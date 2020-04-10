@@ -172,9 +172,12 @@ class EventListener implements Listener {
 	$arena = $this->plugin->getPlayerArena($player);
 
         if ($arena !== null) {
-        	if($event->getItem()->getId() === Item::COMPASS && $event->getItem()->getCustomName() === "§r§aSpectator"){
-        	    $this->spectatorForm($player);
-        	}
+		$type = $arena->inArena($player);
+            	if ($type === Arena::PLAYER_SPECTATING){
+                    if($event->getItem()->getId() === Item::COMPASS){
+        	    	$this->spectatorForm($player);
+        	    }
+		}
 	}
     }
 
