@@ -575,6 +575,7 @@ class Arena {
             $player->getInventory()->removeItem(Item::get(355, 0, 1));
             $player->addTitle("§eSkyWars", "§aNormal Mode");
             $this->removeCage($player);
+	    $player->setGamemode(Player::SURVIVAL);
             if ($player->getAttributeMap() !== null) {//just to be really sure
                 if (($health = $this->plugin->configs["join.health"]) > $player->getMaxHealth() || $health < 1) {
                     $health = $player->getMaxHealth();
