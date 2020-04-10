@@ -3,6 +3,7 @@
 namespace SkyWars;
 
 use pocketmine\entity\Living;
+use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
