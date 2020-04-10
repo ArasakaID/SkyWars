@@ -442,6 +442,7 @@ class Arena {
 
         //Removes player things
         $player->setGamemode(Player::ADVENTURE);
+        $player->getServer()->dispatchCommand($player, "sh off");
         $this->playerSnapshots[$player->getId()] = new PlayerSnapshot($player, $this->plugin->configs["clear.inventory.on.arena.join"], $this->plugin->configs["clear.effects.on.arena.join"]);
         $player->setMaxHealth($this->plugin->configs["join.max.health"]);
 
@@ -570,6 +571,7 @@ class Arena {
             if (!$spectate) {
                 $api = Scoreboards::getInstance();
                 $api->remove($player);
+                $player->getServer()->dispatchCommand($player, "sh on");
                 $player->teleport($player->getServer()->getDefaultLevel()->getSpawnLocation());
                 $playerSnapshot = $this->playerSnapshots[$player->getId()];
                 unset($this->playerSnapshots[$player->getId()]);
@@ -582,13 +584,7 @@ class Arena {
                 foreach ($this->getPlayers() as $pl) {
                     $pl->hidePlayer($player);
                 }
-
-                $idmeta = explode(":", $this->plugin->configs["spectator.quit.item"]);
-                $inventory = $player->getInventory();
-
-                $inventory->setHeldItemIndex(0);
-                $inventory->setItemInHand(Item::get((int)$idmeta[0], (int)$idmeta[1], 1));
-                $inventory->setHeldItemIndex(4);
+                
                 $player->getInventory()->setItem(4, Item::get(345)->setCustomName("§r§aSpectator"));
 
                 $player->sendMessage($this->plugin->lang["death.spectator"]);
