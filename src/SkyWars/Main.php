@@ -452,15 +452,13 @@ class Main extends PluginBase {
         return $templates;
     }
 
-    public function sendDeathMessage(Player $player) : void
+    public function sendDeathMessage(Player $player, ?int $cause = null, ?Entity $damager = null) : void
     {
         $arena = $this->getPlayerArena($player);
         $status = "[" . ($arena->getSlot(true) - 1) . "/" . $arena->getSlot() . "]";
 
-        $last_cause_ev = $player->getLastDamageCause();
-        switch ($last_cause_ev->getCause()) {
+        switch ($cause) {
             case EntityDamageEvent::CAUSE_ENTITY_ATTACK:
-                $damager = $last_cause_ev->getDamager();
                 $message = strtr($this->lang["death.player"], [
                     '{COUNT}' => $status,
                     '{KILLER}' => $damager instanceof Player ? $damager->getDisplayName() : ($damager instanceof Living ? $damager->getName() : $damager->getNameTag()),
@@ -468,7 +466,6 @@ class Main extends PluginBase {
                 ]);
                 break;
             case EntityDamageEvent::CAUSE_PROJECTILE:
-                $damager = $last_cause_ev->getDamager();
                 $message = strtr($this->lang["death.arrow"], [
                     '{COUNT}' => $status,
                     '{KILLER}' => $damager instanceof Player ? $damager->getDisplayName() : ($damager instanceof Living ? $damager->getName() : $damager->getNameTag()),
