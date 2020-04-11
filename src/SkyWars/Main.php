@@ -233,8 +233,8 @@ class Main extends PluginBase {
                 $tile = $level->getTileAt($x, $y, $z);
                 if ($tile instanceof Sign) {
                     $tile->setText(
-                        $this->plugin->configs["1st_line"],
-                        str_replace("{SWNAME}", $this->plugin->arenas[$arena]->getName(), $this->plugin->configs["2nd_line"]),
+                        $this->configs["1st_line"],
+                        str_replace("{SWNAME}", $this->arenas[$arena]->getName(), $this->configs["2nd_line"]),
                         TextFormat::GREEN . $players . TextFormat::BOLD . TextFormat::DARK_GRAY . "/" . TextFormat::RESET . TextFormat::GREEN . $maxplayers,
                         $state
                     );
