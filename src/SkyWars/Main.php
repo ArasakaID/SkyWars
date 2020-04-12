@@ -3,6 +3,7 @@
 namespace SkyWars;
 
 use pocketmine\entity\Living;
+use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
@@ -232,8 +233,8 @@ class Main extends PluginBase {
                 $tile = $level->getTileAt($x, $y, $z);
                 if ($tile instanceof Sign) {
                     $tile->setText(
-                        null,
-                        null,
+                        $this->configs["1st_line"],
+                        str_replace("{SWNAME}", $this->arenas[$arena]->getName(), $this->configs["2nd_line"]),
                         TextFormat::GREEN . $players . TextFormat::BOLD . TextFormat::DARK_GRAY . "/" . TextFormat::RESET . TextFormat::GREEN . $maxplayers,
                         $state
                     );
@@ -452,15 +453,13 @@ class Main extends PluginBase {
         return $templates;
     }
 
-    public function sendDeathMessage(Player $player) : void
+    public function sendDeathMessage(Player $player, ?int $cause = null, ?Entity $damager = null) : void
     {
         $arena = $this->getPlayerArena($player);
         $status = "[" . ($arena->getSlot(true) - 1) . "/" . $arena->getSlot() . "]";
 
-        $last_cause_ev = $player->getLastDamageCause();
-        switch ($last_cause_ev->getCause()) {
+        switch ($cause) {
             case EntityDamageEvent::CAUSE_ENTITY_ATTACK:
-                $damager = $last_cause_ev->getDamager();
                 $message = strtr($this->lang["death.player"], [
                     '{COUNT}' => $status,
                     '{KILLER}' => $damager instanceof Player ? $damager->getDisplayName() : ($damager instanceof Living ? $damager->getName() : $damager->getNameTag()),
@@ -468,7 +467,6 @@ class Main extends PluginBase {
                 ]);
                 break;
             case EntityDamageEvent::CAUSE_PROJECTILE:
-                $damager = $last_cause_ev->getDamager();
                 $message = strtr($this->lang["death.arrow"], [
                     '{COUNT}' => $status,
                     '{KILLER}' => $damager instanceof Player ? $damager->getDisplayName() : ($damager instanceof Living ? $damager->getName() : $damager->getNameTag()),

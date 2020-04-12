@@ -320,49 +320,18 @@ class Arena {
                     $api->setLine($p, 11, "§eMasApip");
                     $api->getObjectiveName($p);
                 }
-
-                if ($this->time % $this->countdown === 10) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new PopSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §a10 §eseconds");
-                        $player->addTitle("§a10", "§ePrepare for battle!");
-                    }
-                }
-                if ($this->time % $this->countdown === 15) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new PopSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §a5 §eseconds");
-                        $player->addTitle("§a5", "§ePrepare for battle!");
-                    }
-                }
-                if ($this->time % $this->countdown === 16) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new PopSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §64 §eseconds");
-                        $player->addTitle("§64", "§ePrepare for battle!");
-                    }
-                }
-                if ($this->time % $this->countdown === 17) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new ClickSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §63 §eseconds");
-                        $player->addTitle("§63", "§ePrepare for battle!");
-                    }
-                }
-                if ($this->time % $this->countdown === 18) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new ClickSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §62 §eseconds");
-                        $player->addTitle("§62", "§ePrepare for battle!");
-                    }
-                }
-                if ($this->time % $this->countdown === 19) {
-                    foreach ($this->getPlayers() as $player) {
-                        $player->getLevel()->addSound(new ClickSound($player), [$player]);
-                        $player->sendMessage("§eStarting in §c1 §eseconds");
-                        $player->addTitle("§c1", "§ePrepare for battle!");
-                        $player->setGamemode(Player::SURVIVAL);
-                    }
+                foreach ($this->getPlayers() as $p) {
+                    if (($this->countdown - $this->time) == 10) $p->addTitle("§c10", "§ePrepare to fight!");
+                    
+                    if (($this->countdown - $this->time) <= 5) $p->addTitle("§c5", "§ePrepare to fight!");
+                    
+                    if (($this->countdown - $this->time) <= 4) $p->addTitle("§c4", "§ePrepare to fight!");
+                    
+                    if (($this->countdown - $this->time) <= 3) $p->addTitle("§c3", "§ePrepare to fight!");
+					
+                    if (($this->countdown - $this->time) <= 2) $p->addTitle("§c2", "§ePrepare to fight!");
+					
+                    if (($this->countdown - $this->time) <= 1) $p->addTitle("§c1", "§ePrepare to fight!");
                 }
 
                 //$this->sendPopup(str_replace("{N}", date("i:s", ($this->countdown - $this->time)), $this->plugin->lang["popup.countdown"]));
@@ -442,6 +411,7 @@ class Arena {
 
         //Removes player things
         $player->setGamemode(Player::ADVENTURE);
+        $player->getServer()->dispatchCommand($player, "sh off");
         $this->playerSnapshots[$player->getId()] = new PlayerSnapshot($player, $this->plugin->configs["clear.inventory.on.arena.join"], $this->plugin->configs["clear.effects.on.arena.join"]);
         $player->setMaxHealth($this->plugin->configs["join.max.health"]);
 
@@ -513,7 +483,17 @@ class Arena {
         if ($current_state === Arena::PLAYER_NOT_FOUND) {
             return false;
         }
-
+        
+        $player->setHealth(20);
+        $player->setMaxHealth(20);
+        $player->setFood(20);
+        $player->extinguish();
+        $player->removeAllEffects();
+        $player->getInventory()->clearAll();
+        $player->getArmorInventory()->clearAll();
+        $player->getCursorInventory()->clearAll();
+        $player->getCraftingGrid()->clearAll();
+        
         $this->setPlayerState($player, null);
 
         if ($this->GAME_STATE === Arena::STATE_COUNTDOWN) {
@@ -560,22 +540,20 @@ class Arena {
             if (!$spectate) {
                 $api = Scoreboards::getInstance();
                 $api->remove($player);
+                $player->getServer()->dispatchCommand($player, "sh on");
                 $player->teleport($player->getServer()->getDefaultLevel()->getSpawnLocation());
                 $playerSnapshot = $this->playerSnapshots[$player->getId()];
                 unset($this->playerSnapshots[$player->getId()]);
                 $playerSnapshot->injectInto($player);
             } elseif ($this->GAME_STATE !== Arena::STATE_COUNTDOWN && 1 < count(array_keys($this->players, Arena::PLAYER_PLAYING, true))) {
                 $player->setGamemode(Player::SPECTATOR);
+                if($player->getY() < 0){
+                    $player->teleport($player->getServer()->getLevelByName($this->world)->getSafeSpawn());
+                }
                 foreach ($this->getPlayers() as $pl) {
                     $pl->hidePlayer($player);
                 }
-
-                $idmeta = explode(":", $this->plugin->configs["spectator.quit.item"]);
-                $inventory = $player->getInventory();
-
-                $inventory->setHeldItemIndex(0);
-                $inventory->setItemInHand(Item::get((int)$idmeta[0], (int)$idmeta[1], 1));
-                $inventory->setHeldItemIndex(4);
+                
                 $player->getInventory()->setItem(4, Item::get(345)->setCustomName("§r§aSpectator"));
 
                 $player->sendMessage($this->plugin->lang["death.spectator"]);
@@ -597,6 +575,7 @@ class Arena {
             $player->getInventory()->removeItem(Item::get(355, 0, 1));
             $player->addTitle("§eSkyWars", "§aNormal Mode");
             $this->removeCage($player);
+	    $player->setGamemode(Player::SURVIVAL);
             if ($player->getAttributeMap() !== null) {//just to be really sure
                 if (($health = $this->plugin->configs["join.health"]) > $player->getMaxHealth() || $health < 1) {
                     $health = $player->getMaxHealth();
