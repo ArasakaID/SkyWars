@@ -617,7 +617,7 @@ class Arena {
             if ($is_winner) {
                 //Broadcast winner
                 $server->broadcastMessage(str_replace(["{SWNAME}", "{PLAYER}"], [$this->SWname, $player->getName()], $this->plugin->lang["server.broadcast.winner"]), $server->getDefaultLevel()->getPlayers());
-                $player->addTitle("§6§lVICTORY!", "§aYou are amazing!");
+                $player->addTitle("§6§lVICTORY!", "§7You were last man standing!");
 
                 //Reward command
                 $command = trim($this->plugin->configs["reward.command"]);
