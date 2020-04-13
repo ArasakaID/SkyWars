@@ -239,7 +239,7 @@ class EventListener implements Listener {
                 if ($this->plugin->configs["death.spectator"]) {
 		
                     if (($entity->getHealth() - $event->getFinalDamage()) <= 0) {
-                        $entity->addTitle("§c§lYOU DIED!", "§eDont give up!");
+                        $entity->addTitle("§c§lYOU DIED!", "§7You now spectator!");
                         
                         $this->plugin->sendDeathMessage($entity, $event->getCause(), $event instanceof EntityDamageByEntityEvent ? $event->getDamager() : null);
                         $entity->getInventory()->dropContents($entity->getLevel(), $entity->asVector3());
