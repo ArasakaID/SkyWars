@@ -62,7 +62,7 @@ class Main extends PluginBase {
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 
         //Calls loadArenas() & loadSigns() to loads arenas & signs...
-        $this->loadSigns();
+        //$this->loadSigns();
         $this->loadArenas();
 
         $this->getServer()->getCommandMap()->register($this->getName(), new Commands("sw", $this));
