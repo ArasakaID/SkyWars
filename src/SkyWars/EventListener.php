@@ -350,7 +350,7 @@ class EventListener implements Listener {
 			switch($result){
                 case 0:
                     if($player->hasPermission("sw.kit.armorer")) {
-                        $player->sendMessage("§eYou have chosen the §aArmorer ekit");
+                        $player->sendMessage("§eYou have chosen the §aArmorer §ekit");
                         $player->getInventory()->removeItem(Item::get(54, 0, 1));
                         $arena = $this->plugin->getPlayerArena($player);
                         if ($arena !== null) {
@@ -387,7 +387,7 @@ class EventListener implements Listener {
                 case 3:
                     if($player->hasPermission("sw.kit.fighter")){
                         $player->getInventory()->removeItem(Item::get(54, 0, 1));
-                        $player->sendMessage("§eYou have chosen the §aArcher §ekit");
+                        $player->sendMessage("§eYou have chosen the §aFighter §ekit");
                         $arena = $this->plugin->getPlayerArena($player);
                         if ($arena !== null) {
                             $arena->fighterKits[$player->getName()] = $player->getName();
