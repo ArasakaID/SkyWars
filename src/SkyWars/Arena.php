@@ -23,6 +23,12 @@ class Arena {
     const STATE_COUNTDOWN = 0;
     const STATE_RUNNING = 1;
     const STATE_NOPVP = 2;
+	
+    //Player kits
+    public $blacksmithKits = [];
+    public $archerKits = [];
+    public $armorerKits = [];
+    public $fighterKits = [];
 
     /** @var PlayerSnapshot[] */
     private $playerSnapshots = [];//store player's inventory, health etc pre-match so they don't lose it once the match ends
@@ -571,10 +577,10 @@ class Arena {
 
         foreach ($this->getPlayers() as $player) {
             $player->getLevel()->addSound(new BlazeShootSound($player), [$player]);
-            $player->getInventory()->removeItem(Item::get(54, 0, 1));
-            $player->getInventory()->removeItem(Item::get(355, 0, 1));
+            $player->getInventory()->clearAll();
             $player->addTitle("§eSkyWars", "§aNormal Mode");
             $this->removeCage($player);
+	    $this->giveKits($player);
 	    $player->setGamemode(Player::SURVIVAL);
             if ($player->getAttributeMap() !== null) {//just to be really sure
                 if (($health = $this->plugin->configs["join.health"]) > $player->getMaxHealth() || $health < 1) {
@@ -601,6 +607,35 @@ class Arena {
         $this->time = 0;
         $this->GAME_STATE = Arena::STATE_NOPVP;
         $this->plugin->refreshSigns($this->SWname, $this->getSlot(true), $this->slot, $this->getState());
+    }
+	
+    public function giveKits(Player $player){
+        if(isset($this->blacksmithKits[$player->getName()])){
+            $inv = $player->getArmorInventory();
+            $inv->setHelmet(Item::get(Item::IRON_HELMET));
+            $inv->setChestplate(Item::get(Item::IRON_CHESTPLATE));
+            $inv->setLeggings(Item::get(Item::IRON_LEGGINGS));
+            $inv->setBoots(Item::get(Item::IRON_BOOTS));
+            unset($this->blacksmithKits[$player->getName()]);
+        }
+        if(isset($this->archerKits[$player->getName()])){
+            $player->getInventory()->addItem(Item::get(261, 0, 1));
+            $player->getInventory()->addItem(Item::get(262, 0, 32));
+            unset($this->archerKits[$player->getName()]);
+        }
+        if(isset($this->armorerKits[$player->getName()])){
+            $inv = $player->getArmorInventory();
+            $inv->setHelmet(Item::get(Item::GOLDEN_HELMET));
+            $inv->setChestplate(Item::get(Item::GOLDEN_CHESTPLATE));
+            $inv->setLeggings(Item::get(Item::GOLDEN_LEGGINGS));
+            $inv->setBoots(Item::get(Item::GOLDEN_BOOTS));
+            unset($this->armorerKits[$player->getName()]);
+        }
+        if(isset($this->fighterKits[$player->getName()])){
+            $player->getInventory()->addItem(Item::get(261, 0, 1));
+            $player->getInventory()->addItem(Item::get(262, 0, 32));
+            unset($this->fighterKits[$player->getName()]);
+        }
     }
 
     public function stop(bool $force = false) : bool
