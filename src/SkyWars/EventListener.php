@@ -350,13 +350,12 @@ class EventListener implements Listener {
 			switch($result){
                 case 0:
                     if($player->hasPermission("sw.kit.armorer")) {
-                        $player->sendMessage("§eYou have used the §aArmorer ekit");
+                        $player->sendMessage("§eYou have chosen the §aArmorer ekit");
                         $player->getInventory()->removeItem(Item::get(54, 0, 1));
-                        $inv = $player->getArmorInventory();
-                        $inv->setHelmet(Item::get(Item::GOLDEN_HELMET));
-                        $inv->setChestplate(Item::get(Item::GOLDEN_CHESTPLATE));
-                        $inv->setLeggings(Item::get(Item::GOLDEN_LEGGINGS));
-                        $inv->setBoots(Item::get(Item::GOLDEN_BOOTS));
+                        $arena = $this->plugin->getPlayerArena($player);
+                        if ($arena !== null) {
+                            $arena->armorerKits[$player->getName()] = $player->getName();
+                        }
                     } else {
                         $player->sendMessage("§cYou have not bought this kit");
                     }
@@ -364,12 +363,11 @@ class EventListener implements Listener {
                 case 1:
                     if($player->hasPermission("sw.kit.blacksmith")){
                         $player->getInventory()->removeItem(Item::get(54, 0, 1));
-                        $player->sendMessage("§eYou have used the §aBlacksmith §ekit");
-                        $inv = $player->getArmorInventory();
-                        $inv->setHelmet(Item::get(Item::IRON_HELMET));
-                        $inv->setChestplate(Item::get(Item::IRON_CHESTPLATE));
-                        $inv->setLeggings(Item::get(Item::IRON_LEGGINGS));
-                        $inv->setBoots(Item::get(Item::IRON_BOOTS));
+                        $player->sendMessage("§eYou have chosen the §aBlacksmith §ekit");
+                        $arena = $this->plugin->getPlayerArena($player);
+                        if ($arena !== null) {
+                            $arena->blacksmithKits[$player->getName()] = $player->getName();
+                        }
                     } else {
                         $player->sendMessage("§cYou have not bought this kit");
                     }
@@ -377,9 +375,11 @@ class EventListener implements Listener {
                 case 2:
                     if($player->hasPermission("sw.kit.archer")){
                         $player->getInventory()->removeItem(Item::get(54, 0, 1));
-                        $player->sendMessage("§eYou have used the §aArcher §ekit");
-                        $player->getInventory()->addItem(Item::get(261, 0, 1));
-                        $player->getInventory()->addItem(Item::get(262, 0, 32));
+                        $player->sendMessage("§eYou have chosen the §aArcher §ekit");
+                        $arena = $this->plugin->getPlayerArena($player);
+                        if ($arena !== null) {
+                            $arena->archerKits[$player->getName()] = $player->getName();
+                        }
                     } else {
                         $player->sendMessage("§cYou have not bought this kit");
                     }
@@ -387,9 +387,11 @@ class EventListener implements Listener {
                 case 3:
                     if($player->hasPermission("sw.kit.fighter")){
                         $player->getInventory()->removeItem(Item::get(54, 0, 1));
-                        $player->sendMessage("§eYou have used the §aArcher §ekit");
-                        $player->getInventory()->addItem(Item::get(Item::DIAMOND_SWORD));
-                        $player->getInventory()->addItem(Item::get(322, 0, 3));
+                        $player->sendMessage("§eYou have chosen the §aArcher §ekit");
+                        $arena = $this->plugin->getPlayerArena($player);
+                        if ($arena !== null) {
+                            $arena->fighterKits[$player->getName()] = $player->getName();
+                        }
                     } else {
                         $player->sendMessage("§cYou have not bought this kit");
                     }
@@ -401,6 +403,6 @@ class EventListener implements Listener {
         $form->addButton("Blacksmith");
         $form->addButton("Archer");
         $form->addButton("Fighter");
-		$form->sendToPlayer($player);
+	$form->sendToPlayer($player);
 	}
 }
