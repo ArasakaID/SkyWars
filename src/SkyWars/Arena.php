@@ -416,7 +416,10 @@ class Arena {
                             $this->closePlayer($player);
                         }
                     }
-                    $this->sendTip("§cRestart in " . date("i:s", ($this->restarttime - $this->time)) . "");
+		    foreach ($this->getPlayers() as $player) {
+                        $this->sendTip("§cRestart in " . date("i:s", ($this->restarttime - $this->time)) . "");
+                    }
+                    
                 } else {
                     $this->stop();
                 }
