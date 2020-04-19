@@ -399,10 +399,10 @@ class Arena {
                 break;
 	  case Arena::STATE_RESTART:
                 if($this->time <= $this->restarttime){
-                    if (($this->countdown - $this->time) <= 5) {
+                    if (($this->restarttime - $this->time) <= 5) {
                         $this->stop();
                     }
-                    if (($this->countdown - $this->time) <= 1) {
+                    if (($this->restarttime - $this->time) <= 1) {
                         foreach ($this->getPlayers() as $player) {
                             $this->closePlayer($player);
 			    $this->reload();
