@@ -667,10 +667,6 @@ class Arena {
 
         foreach ($this->getPlayers() as $player) {
             $is_winner = !$force && $this->inArena($player) === Arena::PLAYER_PLAYING;
-            $this->closePlayer($player);
-            
-            
-
             if ($is_winner) {
                 //Broadcast winner
                 $server->broadcastMessage(str_replace(["{SWNAME}", "{PLAYER}"], [$this->SWname, $player->getName()], $this->plugin->lang["server.broadcast.winner"]), $server->getDefaultLevel()->getPlayers());
@@ -684,8 +680,6 @@ class Arena {
             }
                 
         }
-
-        //$this->reload();
         
         return true;
     }
