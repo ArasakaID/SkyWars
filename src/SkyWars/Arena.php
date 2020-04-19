@@ -49,7 +49,7 @@ class Arena {
     /** @var string */
     private $world;
 	
-    private $restarttime = 5;
+    private $restarttime = 10;
 
     /** @var int */
     private $countdown = 60;//Seconds to wait before the game starts
@@ -314,6 +314,7 @@ class Arena {
                 }
 
                 foreach ($this->getPlayers() as $p) {
+		    $p->getLevel()->addSound(new ClickSound($p), [$p]);
                     $api = Scoreboards::getInstance();
                     $api->new($p, "SkyWars1", "§l§eSKYWARS");
                     $api->setLine($p, 1, " ");
@@ -399,21 +400,30 @@ class Arena {
                 break;
 	  case Arena::STATE_RESTART:
                 if($this->time <= $this->restarttime){
-                    if (($this->restarttime - $this->time) <= 5) {
-                        $this->stop();
+                    if (($this->restarttime - $this->time) == 5) $this->stop();
+                    
+		    foreach ($this->getPlayers() as $p) {
+                        $api = Scoreboards::getInstance();
+                    	$api->new($p, "SkyWars1", "§l§eSKYWARS");
+                    	$api->setLine($p, 1, " ");
+                    	$api->setLine($p, 2, "§fRestarting in: §a".date("i:s", ($this->restarttime - $this->time)));
+                    	$api->setLine($p, 3, "  ");
+                    	$api->setLine($p, 4, "§fPlayers left: §a".$this->getSlot(true));
+                    	$api->setLine($p, 5, "    ");
+                    	$api->setLine($p, 6, "§fRestarting...");
+                    	$api->setLine($p, 7, "     ");
+                    	$api->setLine($p, 8, "§fMap: §a{$this->SWname}");
+                    	$api->setLine($p, 9, "§fMode: §aNormal");
+                    	$api->setLine($p, 10, "      ");
+                    	$api->setLine($p, 11, "§eMasApip");
+                    	$api->getObjectiveName($p);
                     }
-                    if (($this->restarttime - $this->time) <= 1) {
-                        foreach ($this->getPlayers() as $player) {
-                            $this->closePlayer($player);
-			    $this->reload();
-                        }
+                } else {
+                    foreach ($this->getPlayers() as $player) {
+                        $this->closePlayer($player);
+			$this->reload();
                     }
-		    foreach ($this->getPlayers() as $player) {
-                        $this->sendPopup("§cRestart in " . date("i:s", ($this->restarttime - $this->time)) . "");
-                    }
-                }/* else {
-                    $this->stop();
-                }*/
+                }
                 break;
         }
 
