@@ -23,6 +23,7 @@ class Arena {
     const STATE_COUNTDOWN = 0;
     const STATE_RUNNING = 1;
     const STATE_NOPVP = 2;
+    const STATE_RESTART = 3;
 	
     //Player kits
     public $blacksmithKits = [];
@@ -47,6 +48,8 @@ class Arena {
 
     /** @var string */
     private $world;
+	
+    private $restarttime = 5;
 
     /** @var int */
     private $countdown = 60;//Seconds to wait before the game starts
@@ -345,7 +348,8 @@ class Arena {
             case Arena::STATE_RUNNING:
                 $player_cnt = count(array_keys($this->players, Arena::PLAYER_PLAYING, true));
                 if ($player_cnt < 2 || $this->time >= $this->maxtime) {
-                    $this->stop();
+		    $this->GAME_STATE = Arena::STATE_RESTART;
+                    //$this->stop();
                     return;
                 }
 
@@ -391,6 +395,30 @@ class Arena {
                     }
                 } else {
                     $this->GAME_STATE = Arena::STATE_RUNNING;
+                }
+                break;
+	  case Arena::STATE_RESTART:
+                if($this->time <= $this->restarttime){
+                    if (($this->countdown - $this->time) <= 5) {
+                        foreach ($this->getPlayers() as $player) {
+                            $server = $this->plugin->getServer();
+                            $force = false;
+                            $is_winner = !$force && $this->inArena($player) === Arena::PLAYER_PLAYING;
+                            //$this->closePlayer($player);
+                            if ($is_winner) {
+                                $server->broadcastMessage(str_replace(["{SWNAME}", "{PLAYER}"], [$this->SWname, $player->getName()], $this->plugin->lang["server.broadcast.winner"]), $server->getDefaultLevel()->getPlayers());
+                                $player->addTitle("§6§lVICTORY!", "§7You were last man standing!");
+                            }
+                        }
+                    }
+                    if (($this->countdown - $this->time) <= 1) {
+                        foreach ($this->getPlayers() as $player) {
+                            $this->closePlayer($player);
+                        }
+                    }
+                    $this->sendTip("§cRestart in " . date("i:s", ($this->restarttime - $this->time)) . "");
+                } else {
+                    $this->stop();
                 }
                 break;
         }
@@ -643,7 +671,7 @@ class Arena {
         $server = $this->plugin->getServer();
         $server->loadLevel($this->world);
 
-        foreach ($this->getPlayers() as $player) {
+        /*foreach ($this->getPlayers() as $player) {
             $is_winner = !$force && $this->inArena($player) === Arena::PLAYER_PLAYING;
             $this->closePlayer($player);
             
@@ -661,7 +689,7 @@ class Arena {
                 }
             }
                 
-        }
+        }*/
 
         $this->reload();
         
