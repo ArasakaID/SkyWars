@@ -9,7 +9,7 @@ use pocketmine\level\sound\{PopSound, ClickSound, EndermanTeleportSound, Sound, 
 use pocketmine\Player;
 use pocketmine\tile\Chest;
 use pocketmine\utils\{Config, TextFormat};
-use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use Scoreboards\Scoreboards;
 
 class Arena {
@@ -49,7 +49,7 @@ class Arena {
     /** @var string */
     private $world;
 	
-    private $restarttime = 10;
+    private $restarttime = 12;
 
     /** @var int */
     private $countdown = 60;//Seconds to wait before the game starts
@@ -400,8 +400,8 @@ class Arena {
                 break;
 	  case Arena::STATE_RESTART:
                 if($this->time <= $this->restarttime){
-                    if (($this->restarttime - $this->time) == 5) $this->stop();
-                    
+                    if (($this->restarttime - $this->time) == 10) $this->stop();
+		    
 		    foreach ($this->getPlayers() as $p) {
                         $api = Scoreboards::getInstance();
                     	$api->new($p, "SkyWars1", "§l§eSKYWARS");
@@ -681,6 +681,8 @@ class Arena {
                 //Broadcast winner
                 $server->broadcastMessage(str_replace(["{SWNAME}", "{PLAYER}"], [$this->SWname, $player->getName()], $this->plugin->lang["server.broadcast.winner"]), $server->getDefaultLevel()->getPlayers());
                 $player->addTitle("§6§lVICTORY!", "§7You were last man standing!");
+		$volume = mt_rand();
+		$player->getLevel()->broadcastLevelSoundEvent($player, LevelSoundEventPacket::SOUND_LEVELUP, (int) $volume);
 
                 //Reward command
                 $command = trim($this->plugin->configs["reward.command"]);
