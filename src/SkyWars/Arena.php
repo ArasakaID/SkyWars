@@ -417,9 +417,8 @@ class Arena {
                         }
                     }
 		    foreach ($this->getPlayers() as $player) {
-                        $player->sendTip("§cRestart in " . date("i:s", ($this->restarttime - $this->time)) . "");
+                        $this->sendPopup("§cRestart in " . date("i:s", ($this->restarttime - $this->time)) . "");
                     }
-                    
                 } else {
                     $this->stop();
                 }
