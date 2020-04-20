@@ -223,7 +223,6 @@ class EventListener implements Listener {
                     $arena->inArena($entity) !== Arena::PLAYER_PLAYING ||
                     $arena->GAME_STATE === Arena::STATE_COUNTDOWN ||
                     $arena->GAME_STATE === Arena::STATE_NOPVP ||
-		    $arena->GAME_STATE === Arena::STATE_RESTART ||
                     in_array($event->getCause(), $this->plugin->configs["damage.cancelled.causes"])
                 ) {
                     $event->setCancelled();
