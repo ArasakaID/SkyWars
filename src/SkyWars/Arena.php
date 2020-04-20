@@ -585,9 +585,8 @@ class Arena {
                 $playerSnapshot->injectInto($player);
             } elseif ($this->GAME_STATE !== Arena::STATE_COUNTDOWN && 1 < count(array_keys($this->players, Arena::PLAYER_PLAYING, true))) {
                 $player->setGamemode(Player::SPECTATOR);
-                if($player->getY() < 0){
-                    $player->teleport($player->getServer()->getLevelByName($this->world)->getSafeSpawn());
-                }
+                $player->teleport($player->getServer()->getLevelByName($this->world)->getSpawnLocation());
+                
                 foreach ($this->getPlayers() as $pl) {
                     $pl->hidePlayer($player);
                 }
