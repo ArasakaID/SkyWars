@@ -673,23 +673,25 @@ class Arena {
     public function stop(bool $force = false) : bool
     {
         $server = $this->plugin->getServer();
-        $server->loadLevel($this->world);
+        //$server->loadLevel($this->world);
 
         foreach ($this->getPlayers() as $player) {
-            $is_winner = !$force && $this->inArena($player) === Arena::PLAYER_PLAYING;
-            if ($is_winner) {
-                //Broadcast winner
-                $server->broadcastMessage(str_replace(["{SWNAME}", "{PLAYER}"], [$this->SWname, $player->getName()], $this->plugin->lang["server.broadcast.winner"]), $server->getDefaultLevel()->getPlayers());
-                $player->addTitle("§6§lVICTORY!", "§7You were last man standing!");
-		$volume = mt_rand();
-		$player->getLevel()->broadcastLevelSoundEvent($player, LevelSoundEventPacket::SOUND_LEVELUP, (int) $volume);
+	    if($player instanceof Player){
+            	$is_winner = !$force && $this->inArena($player) === Arena::PLAYER_PLAYING;
+            	if ($is_winner) {
+            	    //Broadcast winner
+                	$server->broadcastMessage(str_replace(["{SWNAME}", "{PLAYER}"], [$this->SWname, $player->getName()], $this->plugin->lang["server.broadcast.winner"]), $server->getDefaultLevel()->getPlayers());
+                	$player->addTitle("§6§lVICTORY!", "§7You were last man standing!");
+			$volume = mt_rand();
+			$player->getLevel()->broadcastLevelSoundEvent($player, LevelSoundEventPacket::SOUND_LEVELUP, (int) $volume);
 
-                //Reward command
-                $command = trim($this->plugin->configs["reward.command"]);
-                if (strlen($command) > 1 && $command{0} === "/") {
-                    $this->plugin->getServer()->dispatchCommand(new \pocketmine\command\ConsoleCommandSender(), str_replace("{PLAYER}", $p->getName(), substr($command, 1)));
-                }
-            }
+                	//Reward command
+                	$command = trim($this->plugin->configs["reward.command"]);
+                	if (strlen($command) > 1 && $command{0} === "/") {
+                	    $this->plugin->getServer()->dispatchCommand(new \pocketmine\command\ConsoleCommandSender(), str_replace("{PLAYER}", $p->getName(), substr($command, 1)));
+                	}
+            	}
+	    }
                 
         }
         
