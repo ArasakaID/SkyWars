@@ -236,7 +236,6 @@ class EventListener implements Listener {
                     }
                 }
 
-                if ($this->plugin->configs["death.spectator"]) {
 		
                     if (($entity->getHealth() - $event->getFinalDamage()) <= 0) {
                         $entity->addTitle("§c§lYOU DIED!", "§7You now spectator!");
@@ -246,7 +245,7 @@ class EventListener implements Listener {
                         $arena->closePlayer($entity, false, true);
 			$event->setCancelled();
                     }
-                }
+                
             }
         }
     }
