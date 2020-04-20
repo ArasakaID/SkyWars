@@ -583,9 +583,11 @@ class Arena {
                 $playerSnapshot = $this->playerSnapshots[$player->getId()];
                 unset($this->playerSnapshots[$player->getId()]);
                 $playerSnapshot->injectInto($player);
-            } elseif ($this->GAME_STATE !== Arena::STATE_COUNTDOWN && 1 < count(array_keys($this->players, Arena::PLAYER_PLAYING, true))) {
+            } elseif ($this->GAME_STATE !== Arena::STATE_COUNTDOWN) {
                 $player->setGamemode(Player::SPECTATOR);
-                $player->teleport($player->getServer()->getLevelByName($this->world)->getSpawnLocation());
+                if($player->getY() < 0){
+                    $player->teleport($player->getServer()->getLevelByName($this->world)->getSpawnLocation());
+                }
                 
                 foreach ($this->getPlayers() as $pl) {
                     $pl->hidePlayer($player);
@@ -672,7 +674,7 @@ class Arena {
     public function stop(bool $force = false) : bool
     {
         $server = $this->plugin->getServer();
-        //$server->loadLevel($this->world);
+        $server->loadLevel($this->world);
 
         foreach ($this->getPlayers() as $player) {
 	    if($player instanceof Player){
