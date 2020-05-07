@@ -350,9 +350,17 @@ class EventListener implements Listener {
                 case 0:
                     if($player->hasPermission("sw.kit.armorer")) {
                         $player->sendMessage("§eYou have chosen the §aArmorer §ekit");
-                        $player->getInventory()->removeItem(Item::get(54, 0, 1));
                         $arena = $this->plugin->getPlayerArena($player);
                         if ($arena !== null) {
+			    if(isset($this->blacksmithKit[$player->getName()])){
+			 	   unset($this->blacksmithKit[$player->getName()]);
+			    }
+			    if(isset($this->archerKit[$player->getName()])){
+			    	unset($this->archerKit[$player->getName()]);
+			    }
+			    if(isset($this->knightKit[$player->getName()])){
+			    	unset($this->knightKit[$player->getName()]);
+			    }
                             $arena->armorerKits[$player->getName()] = $player->getName();
                         }
                     } else {
@@ -361,10 +369,18 @@ class EventListener implements Listener {
                 break;
                 case 1:
                     if($player->hasPermission("sw.kit.blacksmith")){
-                        $player->getInventory()->removeItem(Item::get(54, 0, 1));
                         $player->sendMessage("§eYou have chosen the §aBlacksmith §ekit");
                         $arena = $this->plugin->getPlayerArena($player);
                         if ($arena !== null) {
+			    if(isset($this->armorerKit[$player->getName()])){
+			 	   unset($this->armorerKit[$player->getName()]);
+			    }
+			    if(isset($this->archerKit[$player->getName()])){
+			    	unset($this->archerKit[$player->getName()]);
+			    }
+			    if(isset($this->knightKit[$player->getName()])){
+			    	unset($this->knightKit[$player->getName()]);
+			    }
                             $arena->blacksmithKits[$player->getName()] = $player->getName();
                         }
                     } else {
@@ -373,10 +389,18 @@ class EventListener implements Listener {
                 break;
                 case 2:
                     if($player->hasPermission("sw.kit.archer")){
-                        $player->getInventory()->removeItem(Item::get(54, 0, 1));
                         $player->sendMessage("§eYou have chosen the §aArcher §ekit");
                         $arena = $this->plugin->getPlayerArena($player);
                         if ($arena !== null) {
+				if(isset($this->blacksmithKit[$player->getName()])){
+			 	   unset($this->blacksmithKit[$player->getName()]);
+			    }
+			    if(isset($this->armorerKit[$player->getName()])){
+			    	unset($this->armorerKit[$player->getName()]);
+			    }
+			    if(isset($this->knightKit[$player->getName()])){
+			    	unset($this->knightKit[$player->getName()]);
+			    }
                             $arena->archerKits[$player->getName()] = $player->getName();
                         }
                     } else {
@@ -385,10 +409,18 @@ class EventListener implements Listener {
                 break;
                 case 3:
                     if($player->hasPermission("sw.kit.fighter")){
-                        $player->getInventory()->removeItem(Item::get(54, 0, 1));
                         $player->sendMessage("§eYou have chosen the §aFighter §ekit");
                         $arena = $this->plugin->getPlayerArena($player);
                         if ($arena !== null) {
+				if(isset($this->blacksmithKit[$player->getName()])){
+			 	   unset($this->blacksmithKit[$player->getName()]);
+			    }
+			    if(isset($this->archerKit[$player->getName()])){
+			    	unset($this->archerKit[$player->getName()]);
+			    }
+			    if(isset($this->armorerKit[$player->getName()])){
+			    	unset($this->armorerKit[$player->getName()]);
+			    }
                             $arena->fighterKits[$player->getName()] = $player->getName();
                         }
                     } else {
