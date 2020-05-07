@@ -23,7 +23,7 @@ class Arena {
     const STATE_COUNTDOWN = 0;
     const STATE_RUNNING = 1;
     const STATE_NOPVP = 2;
-    const STATE_RESTART = 3;
+    //const STATE_RESTART = 3; 
 	
     //Player kits
     public $blacksmithKits = [];
@@ -349,8 +349,7 @@ class Arena {
             case Arena::STATE_RUNNING:
                 $player_cnt = count(array_keys($this->players, Arena::PLAYER_PLAYING, true));
                 if ($player_cnt < 2 || $this->time >= $this->maxtime) {
-		    $this->GAME_STATE = Arena::STATE_RESTART;
-                    //$this->stop();
+                    $this->stop();
                     return;
                 }
 
@@ -398,7 +397,7 @@ class Arena {
                     $this->GAME_STATE = Arena::STATE_RUNNING;
                 }
                 break;
-	  case Arena::STATE_RESTART:
+	  /*case Arena::STATE_RESTART:
                 if($this->time <= $this->restarttime){
                     if (($this->restarttime - $this->time) == 10) $this->stop();
 		    
@@ -424,7 +423,7 @@ class Arena {
 			$this->reload();
                     }
                 }
-                break;
+                break;*/
         }
 
         ++$this->time;
@@ -678,6 +677,7 @@ class Arena {
 
         foreach ($this->getPlayers() as $player) {
 	    if($player instanceof Player){
+		$this->closePlayer($player);
             	$is_winner = !$force && $this->inArena($player) === Arena::PLAYER_PLAYING;
             	if ($is_winner) {
             	    //Broadcast winner
@@ -695,7 +695,7 @@ class Arena {
 	    }
                 
         }
-        
+        $this->reload();
         return true;
     }
 
