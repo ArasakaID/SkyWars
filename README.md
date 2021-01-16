@@ -1,4 +1,7 @@
 # SkyWars
+
+The Project Moved To https://github.com/MasApip/SkyWarsX
+
 SkyWars Project
 See a bug? please send the bug to https://github.com/MasApip/SkyWars/issues/new
 For Scoreboards please using Scoreboards, Download Here: https://www.mediafire.com/file/yl9e2fjyjmuwtut/Scoreboards_v1.0.2.phar/file
