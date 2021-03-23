@@ -3,4 +3,6 @@ branches:
 projects:
   SkyWars:
     path: ""
+    lint:
+      phpstan: false
 ...
